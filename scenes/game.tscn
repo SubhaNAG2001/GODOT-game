@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://umbpdunlle8n"]
+[gd_scene load_steps=12 format=3 uid="uid://umbpdunlle8n"]
 
 [ext_resource type="PackedScene" uid="uid://ci0nbgojjeks4" path="res://scenes/platform.tscn" id="1_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://bg50qp7gooau6" path="res://scenes/player.tscn" id="1_uwrxv"]
 [ext_resource type="Texture2D" uid="uid://7o7qtv4k8x28" path="res://assets/Sprites/world_tileset.png" id="2_yqjtg"]
 [ext_resource type="Texture2D" uid="uid://jnu7hgmiccmi" path="res://assets/Sprites/Backgrounds/Double/background_fade_trees.png" id="3_lnu2h"]
+[ext_resource type="PackedScene" uid="uid://dwruiewaqpe60" path="res://scenes/movingplat.tscn" id="5_iywne"]
+[ext_resource type="PackedScene" uid="uid://c3t7r4qttqvdd" path="res://scenes/coin.tscn" id="6_p57ef"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lnu2h"]
 texture = ExtResource("2_yqjtg")
@@ -215,6 +217,44 @@ tile_size = Vector2i(16, 15)
 physics_layer_0/collision_layer = 1
 sources/2 = SubResource("TileSetAtlasSource_lnu2h")
 
+[sub_resource type="Animation" id="Animation_iywne"]
+resource_name = "move"
+length = 1.5
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.46667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(394, -12), Vector2(516, -13)]
+}
+
+[sub_resource type="Animation" id="Animation_p57ef"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(394, -12)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_u5sy4"]
+_data = {
+&"RESET": SubResource("Animation_p57ef"),
+&"move": SubResource("Animation_iywne")
+}
+
 [node name="Game" type="Node2D"]
 position = Vector2(330, 244)
 
@@ -248,3 +288,25 @@ centered = false
 
 [node name="platform" parent="." instance=ExtResource("1_lbhrr")]
 position = Vector2(-220, -126)
+
+[node name="platformmoving" parent="." instance=ExtResource("5_iywne")]
+position = Vector2(394, -12)
+scale = Vector2(0.3, 0.3)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="platformmoving"]
+libraries = {
+&"": SubResource("AnimationLibrary_u5sy4")
+}
+autoplay = "move"
+
+[node name="coin" parent="." instance=ExtResource("6_p57ef")]
+position = Vector2(559, 36)
+scale = Vector2(2, 2)
+
+[node name="coin2" parent="." instance=ExtResource("6_p57ef")]
+position = Vector2(751, 21)
+scale = Vector2(2, 2)
+
+[node name="coin3" parent="." instance=ExtResource("6_p57ef")]
+position = Vector2(363, 34)
+scale = Vector2(2, 2)
